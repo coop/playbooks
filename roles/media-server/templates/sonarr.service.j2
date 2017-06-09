@@ -1,0 +1,26 @@
+[Unit]
+Description=Sonarr
+After=docker.service srv-media.mount srv-data.mount nzbget.service
+Requires=docker.service srv-media.mount srv-data.mount nzbget.service
+
+[Service]
+TimeoutStartSec=0
+Restart=always
+ExecStartPre=-/usr/bin/docker stop %n
+ExecStartPre=-/usr/bin/docker rm %n
+ExecStartPre=/usr/bin/docker pull linuxserver/sonarr
+ExecStart=/usr/bin/docker run \
+  --rm \
+  --name %n \
+  --publish "8989:8989" \
+  --env "PUID=1026" \
+  --env "PGID=100" \
+  --env "TZ=Brisbane/Australia" \
+  --volume /dev/rtc:/dev/rtc:ro \
+  --volume "/srv/media/TV Shows:/tv" \
+  --volume "/home/roland/.config/sonarr:/config" \
+  --volume "/srv/data/downloads:/downloads" \
+  linuxserver/sonarr
+
+[Install]
+WantedBy=multi-user.target

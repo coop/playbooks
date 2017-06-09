@@ -1,0 +1,10 @@
+---
+
+- name: Create a media server user that matches the NFS user
+  user:
+    uid: 1026
+    group: 100
+    createhome: yes
+    name: roland
+    password: $1$Fbx.0/oE$qIqivqEGLIP2xTk1OLzzM.
+  become: true

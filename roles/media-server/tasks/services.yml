@@ -1,0 +1,26 @@
+---
+
+- name: Create services
+  template:
+    src: "{{ item }}.service.j2"
+    dest: "/etc/systemd/system/{{ item }}.service"
+  notify:
+    - reload systemctl
+  become: true
+  with_items:
+    - couchpotato
+    - nzbget
+    - plex
+    - sonarr
+
+- name: Start services
+  service:
+    name: "{{ item }}.service"
+    state: started
+    enabled: yes
+  become: true
+  with_items:
+    - couchpotato
+    - nzbget
+    - plex
+    - sonarr

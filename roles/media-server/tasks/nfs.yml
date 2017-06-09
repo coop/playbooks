@@ -1,0 +1,31 @@
+---
+
+- name: Install nfs packages
+  apt:
+    name: "{{ item }}"
+    state: installed
+  become: true
+  with_items:
+    - nfs-common
+
+- name: Create mount points
+  file:
+    path: "/srv/{{ item }}"
+    state: directory
+    mode: 0755
+  become: true
+  with_items:
+    - media
+    - data
+
+- name: Mount directories from NFS
+  mount:
+    state: mounted
+    name: "/srv/{{ item }}"
+    src: 192.168.1.151:/volume1/media
+    fstype: nfs
+    opts: noauto,x-systemd.automount,x-systemd.requires=network-online.target
+  become: true
+  with_items:
+    - media
+    - data

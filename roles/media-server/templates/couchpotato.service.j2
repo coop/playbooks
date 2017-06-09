@@ -1,0 +1,25 @@
+[Unit]
+Description=CouchPotato
+After=docker.service srv-media.mount srv-data.mount nzbget.service
+Requires=docker.service srv-media.mount srv-data.mount nzbget.service
+
+[Service]
+TimeoutStartSec=0
+Restart=always
+ExecStartPre=-/usr/bin/docker stop %n
+ExecStartPre=-/usr/bin/docker rm %n
+ExecStartPre=/usr/bin/docker pull linuxserver/couchpotato
+ExecStart=/usr/bin/docker run \
+  --rm \
+  --name %n \
+  --publish "5050:5050" \
+  --env "PUID=1026" \
+  --env "PGID=100" \
+  --env "TZ=Brisbane/Australia" \
+  --volume "/srv/media/Movies:/movies" \
+  --volume "/home/roland/.config/couchpotato:/config" \
+  --volume "/srv/data/downloads:/downloads" \
+  linuxserver/couchpotato
+
+[Install]
+WantedBy=multi-user.target

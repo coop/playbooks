@@ -1,0 +1,5 @@
+---
+
+- include: cederish.yml
+- include: development.yml
+- include: docker.yml

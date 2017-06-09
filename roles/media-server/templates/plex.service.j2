@@ -1,0 +1,27 @@
+[Unit]
+Description=Plex
+After=docker.service srv-media.mount
+Requires=docker.service srv-media.mount
+
+[Service]
+TimeoutStartSec=0
+Restart=always
+ExecStartPre=-/usr/bin/docker stop %n
+ExecStartPre=-/usr/bin/docker rm %n
+ExecStartPre=/usr/bin/docker pull linuxserver/plex
+ExecStart=/usr/bin/docker run \
+  --rm \
+  --name %n \
+  --net host \
+  --env "VERSION=latest" \
+  --env "PUID=1026" \
+  --env "PGID=100" \
+  --env "TZ=Brisbane/Australia" \
+  --volume "/home/roland/.config/plex:/config" \
+  --volume "/vol/media/TV Shows:/data/tvshows" \
+  --volume "/vol/media/Movies:/data/movies" \
+  --volume "/vol/media/Instructional:/data/instructional" \
+  linuxserver/plex
+
+[Install]
+WantedBy=multi-user.target

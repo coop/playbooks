@@ -1,0 +1,48 @@
+---
+
+- name: Install packages for a cederish environment
+  apt:
+    name: "{{ item }}"
+    state: installed
+    update_cache: yes
+  become: true
+  with_items:
+    - autoconf
+    - bison 
+    - build-essential 
+    - coreutils 
+    - curl 
+    - daemontools 
+    - dnsutils 
+    - git 
+    - imagemagick 
+    - iputils-tracepath 
+    - language-pack-en 
+    - libbz2-dev 
+    - libcurl4-openssl-dev 
+    - libev-dev 
+    - libevent-dev 
+    - libglib2.0-dev 
+    - libjpeg-dev 
+    - libmagickwand-dev 
+    - libmysqlclient-dev 
+    - libncurses5-dev 
+    - libpq-dev 
+    - libpq5 
+    - librdkafka-dev 
+    - libreadline6-dev 
+    - libssl-dev 
+    - libuv-dev 
+    - libxml2-dev 
+    - libxslt-dev 
+    - netcat-openbsd 
+    - openssh-client 
+    - openssh-server 
+    - python-dev 
+    - ruby-dev 
+    - socat 
+    - stunnel 
+    - syslinux 
+    - tar 
+    - telnet 
+    - zip 

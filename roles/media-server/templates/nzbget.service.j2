@@ -1,0 +1,24 @@
+[Unit]
+Description=NZB Get
+After=docker.service srv-data.mount
+Requires=docker.service srv-data.mount
+
+[Service]
+TimeoutStartSec=0
+Restart=always
+ExecStartPre=-/usr/bin/docker stop %n
+ExecStartPre=-/usr/bin/docker rm %n
+ExecStartPre=/usr/bin/docker pull linuxserver/nzbget
+ExecStart=/usr/bin/docker run \
+  --rm \
+  --name %n \
+  --publish "6789:6789" \
+  --env "PUID=1026" \
+  --env "PGID=100" \
+  --env "TZ=Brisbane/Australia" \
+  --volume "/home/roland/.config/nzbget:/config" \
+  --volume "/srv/data/downloads:/downloads" \
+  linuxserver/nzbget
+
+[Install]
+WantedBy=multi-user.target
